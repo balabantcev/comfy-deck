@@ -1,0 +1,7 @@
+interface:
+  display_name: "Comfy Deck"
+  short_description: "Create presentations in Comfy brand style"
+  default_prompt: "Use $comfy-deck to create a Comfy-style presentation deck."
+  brand_color: "#2ABD13"
+  icon_small: "./assets/logos/logo-green.png"
+  icon_large: "./assets/logos/logo-green.svg"

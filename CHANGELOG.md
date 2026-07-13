@@ -11,6 +11,26 @@
 
 ---
 
+## [1.1.0] — 2026-07-13
+
+### Додано
+- Окремий Codex-сумісний пакет у `codex/comfy-deck`
+- `codex/comfy-deck/SKILL.md` із frontmatter у форматі Codex
+- `codex/comfy-deck/agents/openai.yaml` з UI-метаданими для Codex
+- Копію бренд-логотипів у `codex/comfy-deck/assets/logos/`
+- Інструкції встановлення й оновлення для Codex у README
+
+### Змінено
+- Оновлено README: тепер окремо описані сценарії Claude / Cowork і Codex
+- Оновлено `VERSION` до `1.1.0`
+
+### Не змінено
+- Кореневий `SKILL.md` для Claude / Cowork
+- Архів `comfy-deck.skill` для встановлення в Claude / Cowork
+- Базові бренд-правила, кольори, шрифти й логіка оформлення слайдів
+
+---
+
 ## [1.0.0] — 2026-06-22
 
 ### Додано
