@@ -1,205 +1,84 @@
 ---
 name: comfy-deck
-description: "Create PowerPoint presentations in the Comfy brand style. Use when the user asks for Comfy-style slides, a Comfy deck, branded Comfy presentation formatting, or explicitly invokes $comfy-deck. Applies Comfy visual identity: green primary (#2ABD13), orange accent (#FC5E0F), Montserrat body text, Arial Black headings, and bundled Comfy logo assets."
+description: "Create and restyle presentations in the Comfy brand style, including PowerPoint and native Google Slides when connected tools are available. Use for Comfy decks, branded slide formatting, or an explicit comfy-deck request. Keep Arial Black and Montserrat primary; add optional COMFY fonts and apply the 2026 brandbook with original logo, texture, and modular-block resources."
+metadata:
+  version: "1.2.0"
 ---
 
 # Comfy Deck
 
-Create `.pptx` presentations that follow Comfy's brand identity. Use this skill alongside the normal presentation-generation workflow when producing PowerPoint files; follow the standard render-and-verify process for slide QA.
+Apply Comfy's visual identity to new presentations or existing decks in Codex, Claude, Cowork, or Claude Code. Follow the user's requested format, content, slide count, and editing scope. Use the presentation workflow and tools available in the current environment; this skill supplies brand decisions rather than a fixed rendering library.
 
-## Brand Tokens
+## Choose the relevant rules
 
-Use these colors without `#` when working with PowerPoint/PptxGenJS APIs:
+- For every deck, use the palette, primary typography, and logo rules below.
+- For plush graphics, Пуш, thematic blocks, retail offers, КРАЩ, installments, or seasonal material, read [references/brandbook-2026.md](references/brandbook-2026.md).
+- To obtain original fonts or artwork, read [references/resources.md](references/resources.md). Additional fonts and artwork are linked resources; only logos are bundled.
+- For native Google Slides, unavailable fonts, or platform-specific setup, read [references/compatibility.md](references/compatibility.md).
 
-```javascript
-const BRAND = {
-  primary: "2ABD13",
-  secondary: "FC5E0F",
-  white: "FFFFFF",
-  lightBg: "F5F5F5",
-  darkText: "1A1A1A",
-  midText: "555555",
-  lightGreen: "E8F8E5",
-  chartGrey: "94A3B8",
-  chartLightGrey: "CBD5E1",
-};
-```
+User instructions take precedence over this skill. Preserve the meaning and evidence in an existing deck while changing its design. If a copy is requested, copy once and edit that copy. Do not add retail prices, credit characters, or seasonal decorations to analytical slides merely to demonstrate branding.
 
-- Use `primary` for title slide backgrounds, section headers, key accents, and CTA shapes.
-- Use `secondary` for accent highlights, callout numbers, badges, and selected chart series.
-- Use `white` for most content slide backgrounds.
-- Use `lightBg` for supporting, context, or alternating slides.
-- Use `darkText` for body text on light backgrounds.
-- Use `midText` for secondary text, captions, and labels.
+## Palette
+
+| Role | HEX | Use |
+|---|---|---|
+| Primary green | `#2ABD13` | Cover/closing backgrounds and main brand accents |
+| Orange | `#FC5E0F` | Secondary accents and benefit messages |
+| Yellow | `#FFFF00` | Selective emphasis with a legible foreground |
+| White | `#FFFFFF` | Content backgrounds and text on primary green |
+| Pink | `#FEA1D0` | Supporting information blocks |
+| Purple | `#64328A` | Supporting blocks and contrasting labels |
+| Light green | `#85F574` | Supporting information blocks |
+| Dark green | `#1E9F0A` | Supporting blocks and darker green accents |
+
+Green leads the overall identity; orange and the additional colors support it. Use white text on primary green and dark backgrounds. Check contrast on other fills. Do not use the unresolved light-blue token from brandbook slide 34 until its conflicting HEX/RGB values have been reconciled.
+
+For analytical presentations, retain useful neutral tokens: `#F5F5F5` background, `#1A1A1A` main text, `#555555` secondary text, `#94A3B8` / `#CBD5E1` chart support. These are presentation conventions, not additional official brandbook colors. Use brand colors in charts and keep labels, units, axes, and source notes intact.
 
 ## Typography
 
-- Use **Arial Black** for headings, slide titles, large numbers, and section numbers.
-- Use **Montserrat** for body text, bullets, captions, labels, and subtitles.
-- Use Calibri only as a fallback if Montserrat is unavailable.
-- Do not introduce other fonts unless the user explicitly asks.
+**The primary system remains unchanged:** Arial Black for headings and large numbers; Montserrat for body text, lists, subtitles, captions, and labels. Calibri is a fallback when Montserrat is unavailable.
 
-Suggested scale:
+COMFY fonts are **additional choices**, not replacements for the primary system:
 
-| Element | Font | Size | Color |
-|---|---:|---:|---|
-| Slide title on white/light background | Arial Black | 36-40pt | `1A1A1A` |
-| Slide title on green/dark background | Arial Black | 36-44pt | `FFFFFF` |
-| Section label / eyebrow | Montserrat uppercase | 12pt | `2ABD13` or `FFFFFF` |
-| Body text | Montserrat | 14-16pt | `1A1A1A` |
-| Bullet text | Montserrat | 13-15pt | `333333` |
-| Large stat / number | Arial Black | 48-72pt | `2ABD13` or `FC5E0F` |
-| Caption / label | Montserrat | 10-11pt | `555555` |
-| Subtitle on white slide | Montserrat | 18-22pt | `555555` |
-
-## Slide System
-
-Choose backgrounds by slide type:
-
-| Slide type | Background |
+| Optional font | Role |
 |---|---|
-| Title / cover | Primary green `2ABD13` |
-| Section divider | Primary green `2ABD13` or dark `1A1A1A` |
-| Content slides | White `FFFFFF` |
-| Supporting / context slides | Light grey `F5F5F5` |
-| Closing / CTA | Primary green `2ABD13` |
+| COMFY Semi-Bold | Selected brand messages and accent headings |
+| COMFY Bold | Supporting text, numbers, and details within a COMFY brand composition |
+| COMFY Ultra-Condensed | Accent numbers and short phrases only |
 
-Never put dark body text directly on primary green. Use white text on green or dark slides.
+Use optional fonts when appropriate to the requested design and when their original files render correctly. Keep long prose in the primary system. For COMFY brand messages, the brandbook recommends uppercase, tracking −5%, and line spacing 80%; supporting COMFY text must not exceed the main message in size. These settings do not apply automatically to Arial Black or Montserrat.
 
-## Layout Patterns
+Verify language coverage in the final renderer. If Arial Black substitutes Ukrainian characters or looks inconsistent, use Montserrat ExtraBold/Black for the affected headings and retain Arial Black where it renders correctly. Briefly disclose a material font substitution. Do not rasterize editable text to hide missing glyphs.
 
-Vary layouts across the deck. Avoid repeating the same layout twice in a row.
+For a new standard widescreen deck, a useful starting scale is 36–44 pt titles, 14–18 pt body, 10–12 pt captions, and 48–72 pt key numbers. Adjust for page size and density; preserve a supplied template's readable sizes and mixed text roles. Keep body text subordinate to the main message.
 
-### Title Slide
+## Logos
 
-- Use full green background `2ABD13`.
-- Add company/project name in white Arial Black, large, center or left aligned.
-- Add subtitle in white Montserrat around 20pt.
-- Add a small orange accent shape or a thin white rule if the slide needs visual balance.
-- Place the white logo in a corner with clear margin.
+Use original files from `assets/logos/`; SVG is preferred where supported, PNG otherwise.
 
-### Section Divider
-
-- Use a full green or dark background.
-- Add a large section number in orange `FC5E0F`, Arial Black, around 64pt.
-- Add section title in white Arial Black, around 36pt.
-- Add short descriptor in white Montserrat, around 16pt.
-
-### Two-Column Content
-
-- Put title and body or bullets on the left.
-- Put image, chart, diagram, or visual element on the right.
-- Add a thin green left-border accent to anchor the text column.
-
-### Stat Callout Cards
-
-- Use white or light grey cards with subtle shadow.
-- Use 2-3 cards per row for comparison.
-- Put the stat in Arial Black, 56-72pt, green or orange.
-- Put the label below in Montserrat, 12pt, grey.
-
-### Icon + Text Rows
-
-- Use small green circles, about 0.5-0.6 inch diameter, to hold icons.
-- Use Arial Black 16pt for row headers.
-- Use Montserrat 13pt grey for descriptions.
-- Stack 3-4 rows vertically.
-
-### Full-Bleed Image
-
-- Let the image fill the slide or one half of the slide.
-- Add a dark overlay at 40-50% opacity for readability.
-- Put white Arial Black title text over the overlay.
-
-### Data / Chart Slide
-
-- Use a white background.
-- Let the chart occupy about 60-70% of the slide.
-- Put title and one-line insight above the chart.
-- Use Comfy chart colors: `2ABD13`, `FC5E0F`, `94A3B8`, `CBD5E1`.
-
-## Accent Elements
-
-Use accents sparingly and consistently:
-
-- Green left border bar: `2ABD13`, about 0.06-0.08 inch wide.
-- Orange badge or pill: `FC5E0F` with white text, for labels, tags, "NEW", percentages, or status marks.
-- Divider line: `E0E0E0`, 0.5pt, for separating header from body.
-- Stat highlight box: `E8F8E5` with green border, for key numbers in tables.
-
-Do not use accent lines under titles. Prefer whitespace, hierarchy, or a green left bar.
-
-## Charts
-
-Style charts to match the brand:
-
-```javascript
-const chartOptions = {
-  chartColors: ["2ABD13", "FC5E0F", "94A3B8", "CBD5E1"],
-  chartArea: { fill: { color: "FFFFFF" } },
-  catAxisLabelColor: "555555",
-  valAxisLabelColor: "555555",
-  valGridLine: { color: "E5E7EB", size: 0.5 },
-  catGridLine: { style: "none" },
-  dataLabelColor: "1A1A1A",
-};
-```
-
-Avoid PowerPoint default blue. Replace default colors with the brand palette.
-
-## Logo Assets
-
-Bundled logo files live in `assets/logos/`:
-
-| File | Use |
+| Asset | Background |
 |---|---|
-| `assets/logos/logo-white.svg` | Green or dark backgrounds |
-| `assets/logos/logo-green.svg` | White or light grey backgrounds |
-| `assets/logos/logo-mono.svg` | Single-color or print contexts |
-| `assets/logos/logo-white.png` | PNG fallback for green or dark backgrounds |
-| `assets/logos/logo-green.png` | PNG fallback for white or light grey backgrounds |
-| `assets/logos/logo-mono.png` | PNG fallback for single-color contexts |
+| `logo-white.svg` / `.png` | Primary green, dark backgrounds, or photo/video where the white base gives contrast |
+| `logo-green.svg` / `.png` | White, light colored backgrounds, and black where the green-base original remains legible |
+| `logo-mono.svg` / `.png` | When a full-color original is technically impossible |
 
-Always place a logo on the title slide and closing slide. Prefer SVG. Use PNG if the target workflow cannot render SVG reliably.
+Keep a logo on cover and closing slides; use a consistent, uncluttered placement on other slides when appropriate to the deck. For a new widescreen layout, approximately 1.5–2 inches wide and 0.3 inches from the edge is a starting convention, not a verified brandbook measurement. Derive height from the intrinsic aspect ratio.
 
-Placement:
+Never change the logo's colors, lettering, proportions, element positions, base shape, or corner radii. Do not tilt, stretch, outline, redraw, or add effects. Resolve asset paths relative to the installed skill directory rather than hardcoding one user's filesystem.
 
-- Use bottom-left or top-left.
-- Use about 1.5-2 inches wide, adjusted to preserve aspect ratio.
-- Keep at least 0.3 inch margin from slide edges.
-- Never stretch, recolor, crop, or distort the logo.
+## Composition
 
-Resolve logo paths from the skill folder, for example:
+Use a green cover/closing, white content backgrounds, and optional neutral supporting slides as a starting system. A supplied reference may define a different suitable arrangement. Use clear hierarchy and whitespace, and repeat a layout when it helps compare related content.
 
-```javascript
-slide.addImage({
-  path: path.join(skillDir, "assets/logos/logo-white.svg"),
-  x: 0.35,
-  y: 5.12,
-  w: 1.28,
-  h: 0.29,
-});
-```
+- Keep each message block focused on one idea with a short readable message.
+- Prefer original thematic modules when that visual language fits; preserve their proportions and intended joins. Do not redraw them as generic decorated cards.
+- Place original plush artwork where it supports the composition without covering narrative text or evidence. Do not deform characters or invent unofficial poses.
+- Keep charts, tables, diagrams, native lists, notes, and links editable where supported. Preserve evidence images without stretching or cropping away meaningful content.
+- For product advertising, use the dedicated price and benefit hierarchy in the brandbook reference. Financial forecasts and KPI values are not retail prices.
 
-## Workflow
+## Output checks
 
-1. Clarify slide count, audience, and source content when missing.
-2. Plan a sequence: cover, agenda if useful, content sections, and closing.
-3. Generate the `.pptx` using the normal presentation workflow.
-4. Apply Comfy colors, typography, layouts, and logo placement.
-5. Add at least one visual element to every slide: chart, icon row, image, stat, diagram, table, or shaped callout.
-6. Render slides to images and visually inspect each slide.
-7. Fix layout, contrast, overflow, alignment, and brand mismatches.
-8. Save the final file to the user-facing outputs folder when working in a projectless Codex task.
+Render every delivered slide with the target workflow and inspect text fit, glyphs, font weights, contrast, logos, media proportions, and module geometry. Compare the final content and slide order with the source when restyling. Fix concrete defects and verify the affected output. A font name in the API or file is not proof that the renderer used that font for every glyph.
 
-Use file names like `[ProjectName]-deck.pptx` unless the user specifies a name.
-
-## Avoid
-
-- Do not use default blue.
-- Do not use Arial for body text unless forced by environment limitations.
-- Do not give green and orange equal visual weight; green dominates, orange accents, grey supports.
-- Do not make all-text slides.
-- Do not use light text on light backgrounds or dark text on green backgrounds.
-- Do not stretch or recolor logos.
-- Do not use thick decorative divider lines.
+Deliver the requested editable file or verified native presentation link. Mention limitations that affect use; do not claim to have opened the result in an application that was not inspected.
